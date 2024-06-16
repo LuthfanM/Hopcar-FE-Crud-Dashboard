@@ -9,7 +9,7 @@ You need to follow this instruction to make it works.
 cp .env.example .env
 npm install
 ```
-Since we will be running our project in localhost, you need to change port in key `API` into something else, match it with [`BE project`](https://github.com/LuthfanM/Hopcar-BE-Crud-Dashboard). For example if this project run in port 3000, you must not use the same port. You need to use the similar port like your back end project
+Since we will be running our project in localhost, you need to change port in key `API` into something else (inside our .env file), match it with [`BE project`](https://github.com/LuthfanM/Hopcar-BE-Crud-Dashboard). For example if this project run in port 3000, you must not use the same port. You need to use the similar port like your back end project
 
   - You need to run back end project first to ensure data is ready to be loaded. Currently there is no event handling for mitigate such error
   - Run either one of these. Or if you pro enough, just check which script is correct at package.json
