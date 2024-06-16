@@ -1,0 +1,1 @@
+export const CARS_ENDPOINT = `${process.env.NEXT_PUBLIC_API}/cars`;
