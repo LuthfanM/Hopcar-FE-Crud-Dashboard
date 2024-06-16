@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { Modal, Form, Input, Button } from 'antd';
-
+import { Car } from '@/types/Cars';
 interface AddEditCarModalProps {
   visible: boolean;
-  car?: { id?: number; registrationNumber: string; brand: string; model: string; notes: string };
-  onSubmit: (car: { registrationNumber: string; brand: string; model: string; notes: string }) => void;
+  car?: Omit<Car, 'id'> | null;
+  onSubmit: (car: Omit<Car, 'id'>) => void;
   onCancel: () => void;
 }
 
@@ -29,7 +29,7 @@ const AddEditCarModal: React.FC<AddEditCarModalProps> = ({ visible, car, onSubmi
   return (
     <Modal
       title={car ? 'Edit Car' : 'Add Car'}
-      visible={visible}
+      open={visible}
       onCancel={onCancel}
       footer={[
         <Button key="cancel" onClick={onCancel}>
@@ -44,21 +44,21 @@ const AddEditCarModal: React.FC<AddEditCarModalProps> = ({ visible, car, onSubmi
         <Form.Item
           name="registrationNumber"
           label="Car Registration Number"
-          rules={[{ required: true, message: 'Please enter the car registration number' }]}
+          rules={[{ required: true, message: 'Incorrect Value' }]}
         >
           <Input />
         </Form.Item>
         <Form.Item
           name="brand"
           label="Car Brand"
-          rules={[{ required: true, message: 'Please enter the car brand' }]}
+          rules={[{ required: true, message: 'Incorrect Value' }]}
         >
           <Input />
         </Form.Item>
         <Form.Item
           name="model"
           label="Car Model"
-          rules={[{ required: true, message: 'Please enter the car model' }]}
+          rules={[{ required: true, message: 'Incorrect Value' }]}
         >
           <Input />
         </Form.Item>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Table, Button, Space } from "antd";
 import {
   getAllCars,
@@ -7,13 +7,14 @@ import {
   deleteCar,
 } from "../../axios/actions/CarActions";
 import AddEditCarModal from "../Modals/AddEditCarModal";
+import { Car } from "@/types/Cars";
 
 const CarComponent: React.FC = () => {
-  const [cars, setCars] = useState([]);
+  const [cars, setCars] = useState<Car[]>([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [editingCar, setEditingCar] = useState(null);
-  
-  React.useEffect(() => {
+  const [editingCar, setEditingCar] = useState<Car | null>(null);
+
+  useEffect(() => {
     const fetchCars = async () => {
       const data = await getAllCars();
       setCars(data);
@@ -22,25 +23,25 @@ const CarComponent: React.FC = () => {
     fetchCars();
   }, []);
 
-  const handleAddCar = async (car) => {
+  const handleAddCar = async (car: Omit<Car, 'id'>) => {
     const newCar = await createCar(car);
     setCars([...cars, newCar]);
     setIsModalVisible(false);
   };
 
-  const handleEditCar = async (id, car) => {
+  const handleEditCar = async (id: string, car: Omit<Car, 'id'>) => {
     const updatedCar = await updateCar(id, car);
     setCars(cars.map((c) => (c.id === id ? updatedCar : c)));
     setEditingCar(null);
     setIsModalVisible(false);
   };
 
-  const handleDeleteCar = async (id) => {
+  const handleDeleteCar = async (id: string) => {
     await deleteCar(id);
     setCars(cars.filter((car) => car.id !== id));
   };
 
-  const openModal = (car = null) => {
+  const openModal = (car: Car | null = null) => {
     setEditingCar(car);
     setIsModalVisible(true);
   };
@@ -50,7 +51,7 @@ const CarComponent: React.FC = () => {
       title: "Number",
       dataIndex: "number",
       key: "number",
-      render: (_, __, index) => index + 1,
+      render: (_: any, __: any, index: number) => index + 1,
     },
     {
       title: "Car Registration Number",
@@ -75,7 +76,7 @@ const CarComponent: React.FC = () => {
     {
       title: "Actions",
       key: "actions",
-      render: (_, record) => (
+      render: (_: any, record: Car) => (
         <Space size="middle">
           <Button onClick={() => openModal(record)}>Edit</Button>
           <Button danger onClick={() => handleDeleteCar(record.id)}>
@@ -92,6 +93,7 @@ const CarComponent: React.FC = () => {
         columns={columns}
         dataSource={cars}
         pagination={{ position: ["bottomCenter"] }}
+        rowKey="id"
       />
       <Button type="primary" onClick={() => openModal()}>
         Add Car
@@ -99,7 +101,7 @@ const CarComponent: React.FC = () => {
       <AddEditCarModal
         visible={isModalVisible}
         car={editingCar}
-        onSubmit={(car) => {
+        onSubmit={(car: Omit<Car, 'id'>) => {
           if (editingCar) {
             handleEditCar(editingCar.id, car);
           } else {
